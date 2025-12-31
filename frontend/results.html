@@ -411,12 +411,12 @@ a:hover {
     }
 
     // Populate SOC response
-    const socEl = document.getElementById('soc');
-    if (r.soc_response && r.soc_response.length) {
-      socEl.innerHTML = r.soc_response.map(s => `<li>${s}</li>`).join("");
-    } else {
-      socEl.innerHTML = "<li>No response actions required</li>";
-    }
+    // const socEl = document.getElementById('soc');
+    // if (r.soc_response && r.soc_response.length) {
+    //   socEl.innerHTML = r.soc_response.map(s => `<li>${s}</li>`).join("");
+    // } else {
+    //   socEl.innerHTML = "<li>No response actions required</li>";
+    // }
 function viewClamAV() {
   const report = JSON.parse(localStorage.getItem("report") || "{}")
   if (!report.scan_id) {

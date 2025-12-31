@@ -293,15 +293,14 @@ wss.on("connection", (ws) => {
       entry.agent = ws
       ws.role = "agent"
       ws.scan_id = scan_id
-      console.log(`✓ Agent registered for scan ${scan_id}`)
-      return
-    }
 
-    if (type === "REGISTER_UI") {
-      entry.ui.add(ws)
-      ws.role = "ui"
-      ws.scan_id = scan_id
-      console.log(`✓ UI registered for scan ${scan_id}`)
+      // ✅ MARK SCAN AS RUNNING
+      if (scans[scan_id]) {
+        scans[scan_id].status = "RUNNING"
+        scans[scan_id].started_at = new Date().toISOString()
+      }
+
+      console.log(`✓ Agent registered → scan ${scan_id} is RUNNING`)
       return
     }
 
