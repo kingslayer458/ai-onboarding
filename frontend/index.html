@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+	<style>
+		body {
+			background: #fff;
+			color: #111;
+			font-family: 'Inter', Arial, sans-serif;
+			margin: 0; padding: 0;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			transition: background 0.3s, color 0.3s;
+		}
+		.container {
+			background: #f8f8f8;
+			border-radius: 18px;
+			box-shadow: 0 4px 24px #0001;
+			padding: 40px 32px;
+			max-width: 400px;
+			width: 100%;
+			text-align: center;
+		}
+		h2 {
+			font-weight: 600;
+			font-size: 2rem;
+			margin-bottom: 0.5em;
+		}
+		p {
+			color: #555;
+			margin-bottom: 2em;
+		}
+		button {
+			background: #111;
+			color: #fff;
+			border: none;
+			border-radius: 8px;
+			padding: 16px 32px;
+			font-size: 1.1rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: background 0.2s;
+			margin-bottom: 1.5em;
+		}
+		button:hover {
+			background: #222;
+		}
+		#chat a {
+			color: #2563eb;
+			text-decoration: none;
+			font-weight: 600;
+		}
+		@media (prefers-color-scheme: dark) {
+			body { background: #111; color: #fff; }
+			.container { background: #181818; box-shadow: 0 4px 24px #0006; }
+			p { color: #bbb; }
+			button { background: #fff; color: #111; }
+			button:hover { background: #eee; }
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h2>AI Security Assistant</h2>
+		<p>This read-only scan checks your security posture.</p>
+		<button onclick="start()">Start Free Scan</button>
+		<div id="chat"></div>
+	</div>
+	<script src="app.js"></script>
+</body>
+</html>

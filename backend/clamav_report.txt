@@ -1,0 +1,5 @@
+ClamAV Scan Report - 2025-12-31T01:01:53.653204
+Scan Target: C:\Users\manoj\Downloads\agent-test
+Files Scanned: 22
+Infected Files: 0
+

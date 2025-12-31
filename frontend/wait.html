@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .preloader {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .preloader svg {
+      animation: spin 1.2s linear infinite;
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #fff;
+      color: #111;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container {
+      background: #f8f8f8;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #0001;
+      padding: 40px 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    h3 {
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-bottom: 1em;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #111; color: #fff; }
+      .container { background: #181818; box-shadow: 0 4px 24px #0006; }
+    }
+    button {
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 1.5em;
+    }
+    button:hover {
+      background: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="preloader" id="preloader">
+    <svg width="64" height="64" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="28" stroke="#2563eb" stroke-width="8" fill="none" stroke-dasharray="44 44"/>
+    </svg>
+  </div>
+  <div class="container">
+    <h3>Waiting for scan completion...</h3>
+  </div>
+  <script>
+function hidePreloader() {
+  document.getElementById('preloader').style.display = 'none';
+}
+window.onload = function() {
+  setTimeout(hidePreloader, 1200);
+}
+const ul = document.createElement("ul")
+document.querySelector(".container").appendChild(ul)
+
+fetch("http://localhost:3000/api/active-session")
+  .then(r => r.json())
+  .then(({ scan_id }) => {
+    const ws = new WebSocket("ws://localhost:3000")
+
+    ws.onopen = () => {
+      ws.send(JSON.stringify({
+        type: "REGISTER_UI",
+        scan_id
+      }))
+    }
+
+    ws.onmessage = (e) => {
+      const d = JSON.parse(e.data)
+      if (d.type === "PROGRESS") {
+        const li = document.createElement("li")
+        li.textContent = "• " + d.message
+        ul.appendChild(li)
+      }
+    }
+  })
+
+setInterval(async () => {
+  const r = await fetch("http://localhost:3000/api/active-session-status")
+  const data = await r.json()
+  if (data.status === "PROCESSED") {
+    localStorage.setItem("report", JSON.stringify(data.report))
+    location.href = "results.html"
+  }
+}, 3000)
+</script>
+
+</body>
+</html>

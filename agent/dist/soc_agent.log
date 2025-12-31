@@ -1,0 +1,36 @@
+2025-12-30 23:40:51,628 INFO: Requesting scan session from backend
+2025-12-30 23:40:51,635 ERROR: Agent crashed
+Traceback (most recent call last):
+  File "agent.py", line 251, in <module>
+  File "agent.py", line 41, in get_scan_id
+KeyError: 'scan_id'
+2025-12-30 23:41:37,632 INFO: Requesting scan session from backend
+2025-12-30 23:41:37,639 ERROR: Agent crashed
+Traceback (most recent call last):
+  File "agent.py", line 251, in <module>
+  File "agent.py", line 41, in get_scan_id
+KeyError: 'scan_id'
+2025-12-30 23:41:47,728 INFO: Requesting scan session from backend
+2025-12-30 23:41:47,735 ERROR: Agent crashed
+Traceback (most recent call last):
+  File "agent.py", line 251, in <module>
+  File "agent.py", line 41, in get_scan_id
+KeyError: 'scan_id'
+2025-12-30 23:43:35,220 INFO: Requesting scan session from backend
+2025-12-30 23:43:35,227 ERROR: Agent crashed
+Traceback (most recent call last):
+  File "agent.py", line 262, in <module>
+  File "agent.py", line 43, in get_scan_id
+RuntimeError: No active scan session found. Please start scan from the browser first.
+2025-12-30 23:43:45,052 INFO: Requesting scan session from backend
+2025-12-30 23:43:45,058 ERROR: Agent crashed
+Traceback (most recent call last):
+  File "agent.py", line 262, in <module>
+  File "agent.py", line 43, in get_scan_id
+RuntimeError: No active scan session found. Please start scan from the browser first.
+2025-12-30 23:43:49,921 INFO: Requesting scan session from backend
+2025-12-30 23:43:49,928 ERROR: Agent crashed
+Traceback (most recent call last):
+  File "agent.py", line 262, in <module>
+  File "agent.py", line 43, in get_scan_id
+RuntimeError: No active scan session found. Please start scan from the browser first.

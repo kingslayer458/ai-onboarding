@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SOC Security Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: linear-gradient(135deg, #111 0%, #fff 100%);
+  color: #111;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.parallax {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -1;
+  background: linear-gradient(120deg, #181818 0%, #fff 100%);
+  opacity: 0.7;
+  background-attachment: fixed;
+  background-size: cover;
+  animation: parallaxMove 20s linear infinite;
+}
+@keyframes parallaxMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 100vw 100vh; }
+}
+.container {
+  max-width: 800px;
+  margin: 60px auto;
+  background: rgba(248,248,248,0.95);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #0002;
+  padding: 48px 40px;
+  position: relative;
+}
+.card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px #0001;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.high { color: #ef4444; }
+.medium { color: #f59e0b; }
+.low { color: #22c55e; }
+button {
+  padding: 16px 32px;
+  background: #111;
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 2em;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px #0002;
+}
+button:hover { background: #222; }
+.preloader {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.preloader svg {
+  animation: spin 1.2s linear infinite;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+@media (prefers-color-scheme: dark) {
+  body { background: linear-gradient(135deg, #111 0%, #222 100%); color: #fff; }
+  .container { background: rgba(24,24,24,0.98); box-shadow: 0 8px 32px #0006; }
+  .card { background: #222; color: #fff; }
+  button { background: #fff; color: #111; }
+  button:hover { background: #eee; }
+}
+</style>
+</head>
+<body>
+
+<h1>🛡️ SOC Security Assessment</h1>
+
+<div class="card">
+
+  <div class="parallax"></div>
+  <div class="container">
+    <h1>1 SOC Security Assessment</h1>
+    <div class="card">
+      <h2>Overall Score</h2>
+      <h1 id="score"></h1>
+      <p id="severity"></p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>3 System Configuration</h3>
+        <ul id="system"></ul>
+      </div>
+      <div class="card">
+        <h3>10 Security Configuration</h3>
+        <ul id="security"></ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>0 Findings</h3>
+      <ul id="findings"></ul>
+    </div>
+    <div class="card">
+      <h3>16 SOC Response</h3>
+      <ul id="soc"></ul>
+    </div>
+    <button onclick="location.href='onboarding.html'">
+      Proceed to SOC Onboarding
+    </button>
+  </div>
+  <div class="preloader" id="preloader">
+    <svg width="64" height="64" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="28" stroke="#2563eb" stroke-width="8" fill="none" stroke-dasharray="44 44"/>
+    </svg>
+  </div>
+  <script>
+  function hidePreloader() {
+    document.getElementById('preloader').style.display = 'none';
+  }
+  window.onload = function() {
+    setTimeout(hidePreloader, 1200);
+  }
+  const r = JSON.parse(localStorage.getItem("report"))
+  score.innerText = r.score + "/100"
+  severity.innerHTML = "Severity: <b class='" + r.severity.toLowerCase() + "'>" + r.severity + "</b>"
+  system.innerHTML = `
+  <li>Hostname: ${r.system.hostname}</li>
+  <li>OS: ${r.system.os}</li>
+  <li>Architecture: ${r.system.architecture}</li>
+  <li>CPU Cores: ${r.system.cpu_cores}</li>
+  <li>CPU Usage: ${r.system.cpu_usage}%</li>
+  <li>RAM: ${r.system.ram_total_gb} GB (${r.system.ram_usage}%)</li>
+  <li>Disk: ${r.system.disk_total_gb} GB (${r.system.disk_usage}%)</li>
+  <li>Uptime: ${Math.round(r.system.uptime_hours/3600)} hrs</li>
+  <li>IP Address: ${r.system.ip_address}</li>
+  <li>Logged-in Users: ${r.system.logged_in_users}</li>
+  `
+  security.innerHTML = `
+  <li>Firewall: ${r.security.firewall}</li>
+  <li>Defender: ${r.security.defender}</li>
+  <li>RDP Enabled: ${r.security.rdp}</li>
+  <li>SMBv1: ${r.security.smb_v1}</li>
+  <li>Failed Logins: ${r.security.failed_logins}</li>
+  <li>Open Ports: ${r.security.open_ports.join(", ")}</li>
+  <li><b>Nmap Scan:</b><br><ul style='margin-left:1em;'>${(r.nmap||r.security.nmap||[]).map(p=>`<li>${p}</li>`).join("") || "N/A"}</ul></li>
+  <li><b>ClamAV Scan:</b><br>
+    Status: <span style="font-weight:600; color:${(r.clamav||r.security.clamav||{}).status==='INFECTED'?'#ef4444':'#22c55e'}">${(r.clamav||r.security.clamav||{}).status||'N/A'}</span><br>
+    Infected Files: ${(r.clamav||r.security.clamav||{}).infected_count||0}
+    ${(r.clamav||r.security.clamav||{}).infected_files && (r.clamav||r.security.clamav||{}).infected_files.length ? `<ul style='margin-left:1em;'>${(r.clamav||r.security.clamav||{}).infected_files.map(f=>`<li>${f}</li>`).join("")}</ul>` : ''}
+    ${(r.clamav||r.security.clamav||{}).report_path ? `<br><a href='file://${(r.clamav||r.security.clamav||{}).report_path}' target='_blank'>View Full Report</a>` : ''}
+  </li>
+  `
+  findings.innerHTML =
+    r.findings.length ? r.findings.map(f=>`<li>${f}</li>`).join("") : "<li>No critical issues</li>"
+  soc.innerHTML = r.soc_response.map(s=>`<li>${s}</li>`).join("")
+  </script>
+</html>

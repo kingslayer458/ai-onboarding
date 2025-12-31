@@ -1,0 +1,121 @@
+2025-12-31 00:46:47,920 INFO: ============================================================
+2025-12-31 00:46:47,921 INFO: SOC Agent Enhanced - Starting Security Scan
+2025-12-31 00:46:47,922 INFO: ============================================================
+2025-12-31 00:46:47,922 INFO: Requesting scan session from backend
+2025-12-31 00:46:47,930 INFO: Scan ID: b8d46b6c-3e69-42cd-9bef-ba0bcc0213a8
+2025-12-31 00:46:47,947 INFO: WebSocket connection established
+2025-12-31 00:46:47,947 INFO: Collecting system information
+2025-12-31 00:46:48,979 INFO: Collecting security configuration
+2025-12-31 00:46:49,707 INFO: Checking Windows Defender threat history
+2025-12-31 00:46:51,636 INFO: Checking UAC status
+2025-12-31 00:46:51,658 INFO: Checking Windows Update configuration
+2025-12-31 00:46:51,678 INFO: Detecting installed antivirus products
+2025-12-31 00:46:51,887 INFO: Running Nmap port scan
+2025-12-31 00:46:51,931 INFO: Nmap check output: Nmap version 7.93 ( https://nmap.org )
+Platform: i686-pc-windows-windows
+Compiled with: nmap-liblu
+2025-12-31 00:46:51,931 INFO: Nmap found, starting scan...
+2025-12-31 00:46:51,931 INFO: Scanning 127.0.0.1 with Nmap...
+2025-12-31 00:46:52,188 INFO: Found open port: {'port': '21/tcp', 'state': 'open', 'service': 'ftp'}
+2025-12-31 00:46:52,188 INFO: Found open port: {'port': '80/tcp', 'state': 'open', 'service': 'http'}
+2025-12-31 00:46:52,188 INFO: Found open port: {'port': '135/tcp', 'state': 'open', 'service': 'msrpc'}
+2025-12-31 00:46:52,188 INFO: Found open port: {'port': '443/tcp', 'state': 'open', 'service': 'https'}
+2025-12-31 00:46:52,188 INFO: Found open port: {'port': '445/tcp', 'state': 'open', 'service': 'microsoft-ds'}
+2025-12-31 00:46:52,188 INFO: Found open port: {'port': '3000/tcp', 'state': 'open', 'service': 'ppp'}
+2025-12-31 00:46:52,188 INFO: Found open port: {'port': '3306/tcp', 'state': 'open', 'service': 'mysql'}
+2025-12-31 00:46:52,188 INFO: Found open port: {'port': '8080/tcp', 'state': 'open', 'service': 'http-proxy'}
+2025-12-31 00:46:52,189 INFO: Nmap completed - 8 open ports found
+2025-12-31 00:46:52,189 INFO: Initializing ClamAV malware scan
+2025-12-31 00:46:52,190 INFO: Scanning directory: C:\Users\manoj\Downloads\agent-test\insta-bot-backup
+2025-12-31 00:46:52,190 INFO: Scanning directory: C:\Users\manoj\Downloads\agent-test\instagram-bot-steam-railway
+2025-12-31 00:47:15,255 INFO: ClamAV completed — 22 files scanned, 0 infected
+2025-12-31 00:47:15,256 INFO: Checking startup programs
+2025-12-31 00:47:15,482 INFO: Collecting network interface information
+2025-12-31 00:47:15,491 INFO: Analyzing running processes
+2025-12-31 00:47:15,516 INFO: Finalizing and sending results to SOC backend
+2025-12-31 00:47:15,521 INFO: Scan completed successfully
+2025-12-31 00:47:15,521 INFO: Backend response: 200 {"success":true,"score":50,"risk_level":"HIGH"}
+2025-12-31 00:49:41,720 INFO: ============================================================
+2025-12-31 00:49:41,720 INFO: SOC Agent Enhanced - Starting Security Scan
+2025-12-31 00:49:41,720 INFO: ============================================================
+2025-12-31 00:49:41,720 INFO: Requesting scan session from backend
+2025-12-31 00:49:41,727 INFO: Scan ID: fe619d2d-3296-4f40-af1f-ee21fa0a9c7d
+2025-12-31 00:49:41,729 INFO: WebSocket connection established
+2025-12-31 00:49:41,729 INFO: Collecting system information
+2025-12-31 00:49:42,755 INFO: Collecting security configuration
+2025-12-31 00:49:44,199 INFO: Checking Windows Defender threat history
+2025-12-31 00:49:46,620 INFO: Checking UAC status
+2025-12-31 00:49:46,646 INFO: Checking Windows Update configuration
+2025-12-31 00:49:46,670 INFO: Detecting installed antivirus products
+2025-12-31 00:49:47,091 INFO: Running Nmap port scan
+2025-12-31 00:49:47,132 INFO: Nmap check output: Nmap version 7.93 ( https://nmap.org )
+Platform: i686-pc-windows-windows
+Compiled with: nmap-liblu
+2025-12-31 00:49:47,133 INFO: Nmap found, starting scan...
+2025-12-31 00:49:47,133 INFO: Scanning 127.0.0.1 with Nmap...
+2025-12-31 00:49:47,418 INFO: Found open port: {'port': '21/tcp', 'state': 'open', 'service': 'ftp'}
+2025-12-31 00:49:47,419 INFO: Found open port: {'port': '80/tcp', 'state': 'open', 'service': 'http'}
+2025-12-31 00:49:47,419 INFO: Found open port: {'port': '135/tcp', 'state': 'open', 'service': 'msrpc'}
+2025-12-31 00:49:47,419 INFO: Found open port: {'port': '443/tcp', 'state': 'open', 'service': 'https'}
+2025-12-31 00:49:47,419 INFO: Found open port: {'port': '445/tcp', 'state': 'open', 'service': 'microsoft-ds'}
+2025-12-31 00:49:47,420 INFO: Found open port: {'port': '3000/tcp', 'state': 'open', 'service': 'ppp'}
+2025-12-31 00:49:47,420 INFO: Found open port: {'port': '3306/tcp', 'state': 'open', 'service': 'mysql'}
+2025-12-31 00:49:47,420 INFO: Found open port: {'port': '8080/tcp', 'state': 'open', 'service': 'http-proxy'}
+2025-12-31 00:49:47,420 INFO: Nmap completed - 8 open ports found
+2025-12-31 00:49:47,421 INFO: Initializing ClamAV malware scan
+2025-12-31 00:49:47,423 INFO: Scanning directory: C:\Users\manoj\Downloads\agent-test\insta-bot-backup
+2025-12-31 00:49:47,423 INFO: Scanning directory: C:\Users\manoj\Downloads\agent-test\instagram-bot-steam-railway
+2025-12-31 00:50:34,278 INFO: ClamAV completed — 22 files scanned, 0 infected
+2025-12-31 00:50:34,278 INFO: Checking startup programs
+2025-12-31 00:50:34,641 INFO: Collecting network interface information
+2025-12-31 00:50:34,652 INFO: Analyzing running processes
+2025-12-31 00:50:34,692 INFO: Finalizing and sending results to SOC backend
+2025-12-31 00:50:34,719 INFO: Scan completed successfully
+2025-12-31 00:50:34,719 INFO: Backend response: 200 {"success":true,"score":65,"risk_level":"MEDIUM"}
+2025-12-31 01:01:27,030 INFO: ============================================================
+2025-12-31 01:01:27,030 INFO: SOC Agent Enhanced - Starting Security Scan
+2025-12-31 01:01:27,030 INFO: ============================================================
+2025-12-31 01:01:27,030 INFO: Requesting scan session from backend
+2025-12-31 01:01:27,037 INFO: Scan ID: fe619d2d-3296-4f40-af1f-ee21fa0a9c7d
+2025-12-31 01:01:27,049 INFO: WebSocket connection established
+2025-12-31 01:01:27,049 INFO: Collecting system information
+2025-12-31 01:01:28,071 INFO: Collecting security configuration
+2025-12-31 01:01:28,825 INFO: Checking Windows Defender threat history
+2025-12-31 01:01:30,818 INFO: Checking UAC status
+2025-12-31 01:01:30,842 INFO: Checking Windows Update configuration
+2025-12-31 01:01:30,864 INFO: Detecting installed antivirus products
+2025-12-31 01:01:31,093 INFO: Running Nmap port scan
+2025-12-31 01:01:31,127 INFO: Nmap check output: Nmap version 7.93 ( https://nmap.org )
+Platform: i686-pc-windows-windows
+Compiled with: nmap-liblu
+2025-12-31 01:01:31,127 INFO: Nmap found, starting scan...
+2025-12-31 01:01:31,128 INFO: Scanning 127.0.0.1 with Nmap...
+2025-12-31 01:01:31,386 INFO: Found open port: {'port': '21/tcp', 'state': 'open', 'service': 'ftp'}
+2025-12-31 01:01:31,387 INFO: Found open port: {'port': '80/tcp', 'state': 'open', 'service': 'http'}
+2025-12-31 01:01:31,387 INFO: Found open port: {'port': '135/tcp', 'state': 'open', 'service': 'msrpc'}
+2025-12-31 01:01:31,387 INFO: Found open port: {'port': '443/tcp', 'state': 'open', 'service': 'https'}
+2025-12-31 01:01:31,387 INFO: Found open port: {'port': '445/tcp', 'state': 'open', 'service': 'microsoft-ds'}
+2025-12-31 01:01:31,387 INFO: Found open port: {'port': '3000/tcp', 'state': 'open', 'service': 'ppp'}
+2025-12-31 01:01:31,387 INFO: Found open port: {'port': '3306/tcp', 'state': 'open', 'service': 'mysql'}
+2025-12-31 01:01:31,387 INFO: Found open port: {'port': '8080/tcp', 'state': 'open', 'service': 'http-proxy'}
+2025-12-31 01:01:31,387 INFO: Nmap completed - 8 open ports found
+2025-12-31 01:01:31,388 INFO: Initializing ClamAV malware scan
+2025-12-31 01:01:31,389 INFO: Scanning directory: C:\Users\manoj\Downloads\agent-test\insta-bot-backup
+2025-12-31 01:01:31,389 INFO: Scanning directory: C:\Users\manoj\Downloads\agent-test\instagram-bot-steam-railway
+2025-12-31 01:01:53,665 INFO: ClamAV completed — 22 files scanned, 0 infected
+2025-12-31 01:01:53,665 INFO: Checking startup programs
+2025-12-31 01:01:53,933 INFO: Collecting network interface information
+2025-12-31 01:01:53,940 INFO: Analyzing running processes
+2025-12-31 01:01:53,964 INFO: Finalizing and sending results to SOC backend
+2025-12-31 01:01:53,969 INFO: Scan completed successfully
+2025-12-31 01:01:53,969 INFO: Backend response: 200 {"success":true,"score":65,"risk_level":"MEDIUM"}
+2025-12-31 01:29:34,946 INFO: ============================================================
+2025-12-31 01:29:34,947 INFO: SOC Agent Enhanced - Starting Security Scan
+2025-12-31 01:29:34,947 INFO: ============================================================
+2025-12-31 01:29:34,947 INFO: Requesting scan session from backend
+2025-12-31 01:29:34,947 ERROR: Agent crashed
+Traceback (most recent call last):
+  File "agent.py", line 556, in <module>
+  File "agent.py", line 53, in get_scan_id
+RuntimeError: SOC_SESSION_ID not set.
+Please start scan from browser first.

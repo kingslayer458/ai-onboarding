@@ -1,0 +1,1 @@
+Run backend, open frontend/index.html, download and run agent.exe after building it.
