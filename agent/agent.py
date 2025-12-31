@@ -1,3 +1,9 @@
+
+from compatibility import (
+    ping_host, tcp_port_check, dns_check,
+    estimate_bandwidth, evaluate_products,
+    recommend_best
+)
 import websocket
 import json
 import platform
@@ -591,12 +597,35 @@ if __name__ == "__main__":
         system["top_processes"] = running_processes()
 
         progress("Finalizing and sending results to SOC backend")
+        
+        bandwidth = estimate_bandwidth()
+
+        compatibility = {
+            "availability": {
+                "dns": dns_check("google.com"),
+                "ping": ping_host("google.com"),
+                "ports": {
+                    "80": tcp_port_check("google.com", 80),
+                    "443": tcp_port_check("google.com", 443)
+                }
+            },
+            "bandwidth_mbps": bandwidth,
+            "product_readiness": evaluate_products(system, security, bandwidth)
+        }
+
+        # Best product recommendation
+        compatibility["recommended_product"] = recommend_best(
+            compatibility["product_readiness"]
+        )
+
+        # -------------------- Final Payload --------------------
 
         payload = {
             "scan_id": scan_id,
             "system": system,
             "security": security,
-            "agent_version": "2.0.0",
+            "compatibility": compatibility,   # ✅ attached ONCE, correctly
+            "agent_version": "2.1.0",
             "scan_completed_at": datetime.now().isoformat()
         }
 

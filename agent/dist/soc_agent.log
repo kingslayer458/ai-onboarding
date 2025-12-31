@@ -34,3 +34,30 @@ Traceback (most recent call last):
   File "agent.py", line 262, in <module>
   File "agent.py", line 43, in get_scan_id
 RuntimeError: No active scan session found. Please start scan from the browser first.
+2025-12-31 18:16:58,220 INFO: ============================================================
+2025-12-31 18:16:58,220 INFO: SOC Agent Enhanced - Starting Security Scan
+2025-12-31 18:16:58,220 INFO: ============================================================
+2025-12-31 18:16:58,220 INFO: Requesting scan session from backend
+2025-12-31 18:16:58,228 INFO: Scan ID: 3399d674-326a-47ac-ae12-4e301331f15b
+2025-12-31 18:16:58,239 INFO: WebSocket connection established
+2025-12-31 18:16:58,239 INFO: Collecting system information
+2025-12-31 18:16:59,315 INFO: Collecting security configuration
+2025-12-31 18:17:01,220 INFO: Checking Windows Defender threat history
+2025-12-31 18:17:02,811 INFO: Checking UAC status
+2025-12-31 18:17:02,848 INFO: Checking Windows Update configuration
+2025-12-31 18:17:02,886 INFO: Detecting installed antivirus products
+2025-12-31 18:17:03,524 INFO: Running Nmap port scan
+2025-12-31 18:17:03,594 INFO: Nmap check output: Nmap version 7.98 ( https://nmap.org )
+Platform: i686-pc-windows-windows
+Compiled with: nmap-liblu
+2025-12-31 18:17:03,594 INFO: Nmap found, starting scan...
+2025-12-31 18:17:03,594 INFO: Scanning 127.0.0.1 with Nmap...
+2025-12-31 18:17:15,222 INFO: Nmap completed - 0 open ports found
+2025-12-31 18:17:15,223 INFO: Initializing ClamAV malware scan
+2025-12-31 18:17:15,223 INFO: ClamAV not installed, skipping scan
+2025-12-31 18:17:15,223 INFO: Checking startup programs
+2025-12-31 18:17:15,508 INFO: Collecting network interface information
+2025-12-31 18:17:15,519 INFO: Analyzing running processes
+2025-12-31 18:17:16,300 INFO: Finalizing and sending results to SOC backend
+2025-12-31 18:17:20,187 INFO: Scan completed successfully
+2025-12-31 18:17:20,187 INFO: Backend response: 200 {"success":true,"score":95,"risk_level":"LOW"}

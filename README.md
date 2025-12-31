@@ -12,3 +12,15 @@ pip install pyinstaller
 
  node server.js
 
+python -m pyinstaller --clean --onefile --hidden-import=psutil --hidden-import=websocket --hidden-import=compatibility agent.py
+
+python -m PyInstaller \
+  --clean \
+  --onefile \
+  --hidden-import=psutil \
+  --hidden-import=websocket \
+  --hidden-import=compatibility \
+  agent.py
+
+  python -m PyInstaller --clean --onefile --collect-all psutil --hidden-import=compatibility  --hidden-import=websocket  agent.py
+python -m pip install websocket-client

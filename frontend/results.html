@@ -278,6 +278,12 @@ a:hover {
         <ul id="security"></ul>
       </div>
     </div>
+    <div class="grid">
+      <div class="card full-width" id="compatibility-card" style="display:none">
+        <h3>Product Compatibility</h3>
+        <ul id="compatibility"></ul>
+      </div>
+    </div>
 
     <div class="grid">
       <div class="card full-width">
@@ -337,7 +343,7 @@ a:hover {
         <li><b>CPU Usage:</b> ${s.cpu_usage || 0}%</li>
         <li><b>RAM:</b> ${s.ram_total_gb || 0} GB (${s.ram_usage || 0}% used)</li>
         <li><b>Disk:</b> ${s.disk_total_gb || 0} GB (${s.disk_usage || 0}% used)</li>
-        <li><b>Uptime:</b> ${Math.round((s.uptime_hours || 0)/3600)} hrs</li>
+        <li><b>Uptime:</b> ${s.uptime_hours || 0} hrs</li>
         <li><b>IP Address:</b> ${s.ip_address || 'N/A'}</li>
         <li><b>Logged-in Users:</b> ${s.logged_in_users || 0}</li>
       `;
@@ -437,6 +443,25 @@ function viewClamAV() {
     .catch(err => {
       alert(err.message)
     })
+}
+if (r.compatibility?.product_readiness) {
+  document.getElementById("compatibility-card").style.display = "block"
+  const ul = document.getElementById("compatibility")
+
+  Object.entries(r.compatibility.product_readiness).forEach(([k, v]) => {
+    ul.innerHTML += `
+      <li>
+        <b>${k.toUpperCase()}:</b>
+        ${v.compatible ? "✅ Ready" : "❌ Not Ready"}
+        ${v.missing?.length ? ` – Missing: ${v.missing.join(", ")}` : ""}
+      </li>
+    `
+  })
+}
+if (r.compatibility?.recommended_product) {
+  findingsEl.innerHTML += `
+    <li><b>Recommended Product:</b> ${r.compatibility.recommended_product}</li>
+  `
 }
   </script>
 </body>

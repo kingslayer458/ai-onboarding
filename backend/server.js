@@ -536,7 +536,7 @@ app.get("/api/scan/:scan_id", (req, res) => {
 
 // ENHANCED: Improved scoring algorithm
 app.post("/api/scan-result", (req, res) => {
-  const { system, security, scan_id, agent_version } = req.body
+  const { system, security, compatibility, scan_id, agent_version } = req.body
 
   let score = 100
   const findings = []
@@ -649,6 +649,7 @@ app.post("/api/scan-result", (req, res) => {
     findings,
     recommendations,
     critical_issues,
+    compatibility,
     agent_version,
     scan_completed_at: new Date().toISOString(),
     soc_response: [
