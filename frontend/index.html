@@ -1,75 +1,405 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-	<style>
-		body {
-			background: #fff;
-			color: #111;
-			font-family: 'Inter', Arial, sans-serif;
-			margin: 0; padding: 0;
-			min-height: 100vh;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			transition: background 0.3s, color 0.3s;
-		}
-		.container {
-			background: #f8f8f8;
-			border-radius: 18px;
-			box-shadow: 0 4px 24px #0001;
-			padding: 40px 32px;
-			max-width: 400px;
-			width: 100%;
-			text-align: center;
-		}
-		h2 {
-			font-weight: 600;
-			font-size: 2rem;
-			margin-bottom: 0.5em;
-		}
-		p {
-			color: #555;
-			margin-bottom: 2em;
-		}
-		button {
-			background: #111;
-			color: #fff;
-			border: none;
-			border-radius: 8px;
-			padding: 16px 32px;
-			font-size: 1.1rem;
-			font-weight: 600;
-			cursor: pointer;
-			transition: background 0.2s;
-			margin-bottom: 1.5em;
-		}
-		button:hover {
-			background: #222;
-		}
-		#chat a {
-			color: #2563eb;
-			text-decoration: none;
-			font-weight: 600;
-		}
-		@media (prefers-color-scheme: dark) {
-			body { background: #111; color: #fff; }
-			.container { background: #181818; box-shadow: 0 4px 24px #0006; }
-			p { color: #bbb; }
-			button { background: #fff; color: #111; }
-			button:hover { background: #eee; }
-		}
-	</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Security Assistant</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f9fafb;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .chatbot {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+      max-height: 90vh;
+    }
+
+    .header {
+      background: #000;
+      color: #fff;
+      padding: 16px;
+      font-weight: 600;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .messages {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .bot {
+      background: #f1f5f9;
+      color: #111;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .user {
+      background: #000;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .options {
+      padding: 12px 16px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #fff;
+    }
+
+    .options button {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .options button:hover {
+      background: #f9fafb;
+      border-color: #000;
+      transform: translateX(4px);
+    }
+
+    .options button:active {
+      transform: translateX(4px) scale(0.98);
+    }
+
+    .cta {
+      padding: 16px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      background: #fafafa;
+    }
+
+    .cta button {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
+
+    .cta button:hover {
+      background: #222;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .cta button:active {
+      transform: translateY(0);
+    }
+
+    .cta p {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .typing {
+      display: inline-flex;
+      gap: 4px;
+      padding: 10px 14px;
+    }
+
+    .typing span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94a3b8;
+      animation: typing 1.4s infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+      }
+      30% {
+        transform: translateY(-10px);
+        opacity: 1;
+      }
+    }
+
+    /* Scrollbar styling */
+    .messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+
+    .messages::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
 </head>
+
 <body>
-	<div class="container">
-		<h2>AI Security Assistant</h2>
-		<p>This read-only scan checks your security posture.</p>
-		<button onclick="start()">Start Free Scan</button>
-		<div id="chat"></div>
-	</div>
-	<script src="app.js"></script>
+
+<div class="chatbot">
+  <div class="header">Agentic X Assistant</div>
+
+  <div id="chat">
+    <div class="messages" id="messages"></div>
+  </div>
+
+  <div class="options" id="options"></div>
+
+  <div class="cta hidden" id="cta">
+    <button onclick="beginDownload()">Download Agentic X Agent</button>
+    <p>Read-only scan • No data modification</p>
+  </div>
+</div>
+
+<script>
+const messages = document.getElementById("messages")
+const options = document.getElementById("options")
+const cta = document.getElementById("cta")
+
+function bot(msg, delay = 0) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      // Show typing indicator
+      const typing = document.createElement("div")
+      typing.className = "msg bot typing"
+      typing.innerHTML = '<span></span><span></span><span></span>'
+      messages.appendChild(typing)
+      messages.scrollTop = messages.scrollHeight
+
+      // Replace with actual message after delay
+      setTimeout(() => {
+        typing.remove()
+        const d = document.createElement("div")
+        d.className = "msg bot"
+        d.innerText = msg
+        messages.appendChild(d)
+        messages.scrollTop = messages.scrollHeight
+        resolve()
+      }, 800)
+    }, delay)
+  })
+}
+
+function user(msg) {
+  const d = document.createElement("div")
+  d.className = "msg user"
+  d.innerText = msg
+  messages.appendChild(d)
+  messages.scrollTop = messages.scrollHeight
+}
+
+function setOptions(list) {
+  options.innerHTML = ""
+  if (list.length === 0) {
+    options.classList.add("hidden")
+  } else {
+    options.classList.remove("hidden")
+    list.forEach(b => {
+      const btn = document.createElement("button")
+      btn.innerText = b.text
+      btn.onclick = b.action
+      options.appendChild(btn)
+    })
+  }
+}
+
+async function beginDownload() {
+  setOptions([])
+  cta.classList.add("hidden")
+  
+  // Clear previous messages
+  messages.innerHTML = ""
+  
+  await bot("Preparing your secure scanner…")
+  await bot("Creating scan session...", 300)
+
+  try {
+    const r = await fetch("http://localhost:3000/api/create-session", {
+      method: "POST"
+    })
+
+    if (!r.ok) {
+      await bot("Failed to create scan session.")
+      await bot("Please try again.", 300)
+      return
+    }
+
+    const data = await r.json()
+    console.log("Session created:", data)
+
+    await bot("Session created successfully", 300)
+    
+    // Create download button as a bot message
+    const downloadMsg = document.createElement("div")
+    downloadMsg.className = "msg bot"
+    downloadMsg.style.textAlign = "center"
+    downloadMsg.innerHTML = `
+      <div style="font-weight:600; margin-bottom:8px;">Scanner Ready</div>
+      <a href="http://localhost:3000/download/agent.exe" 
+         download 
+         style="display:inline-block; background:#000; color:#fff; padding:8px 16px; 
+                border-radius:6px; text-decoration:none; font-weight:600; font-size:0.85rem;">
+        Download
+      </a>
+      <div style="color:#666; font-size:0.75rem; margin-top:6px;">
+        Run after download
+      </div>
+    `
+    messages.appendChild(downloadMsg)
+    messages.scrollTop = messages.scrollHeight
+
+    await bot("Waiting for scanner to start...", 500)
+
+    const interval = setInterval(async () => {
+      try {
+        const statusRes = await fetch("http://localhost:3000/api/active-session-status")
+        const status = await statusRes.json()
+
+        if (status.status === "RUNNING") {
+          clearInterval(interval)
+          
+          // Clear and show final message
+          messages.innerHTML = ""
+          await bot("Scanner is running!")
+          await bot("Redirecting...", 500)
+          
+          setTimeout(() => {
+            location.href = "wait.html"
+          }, 1000)
+        }
+      } catch (err) {
+        console.error("Status check error:", err)
+      }
+    }, 2000)
+
+    setTimeout(() => {
+      clearInterval(interval)
+    }, 120000)
+
+  } catch (err) {
+    console.error("Download error:", err)
+    messages.innerHTML = ""
+    await bot("An error occurred.")
+    await bot("Please try again.", 300)
+  }
+}
+
+// Initial chat flow
+async function startChat() {
+  await bot("Hi 👋 I'm your Agentic X Assistant.")
+  await bot("What are you mainly looking to protect?", 300)
+  
+  setOptions([
+    { text: "My Server", action: () => step2("My Server") },
+    { text: "My Laptop / PC", action: () => step2("My Laptop / PC") },
+    { text: "Company Network", action: () => step2("Company Network") }
+  ])
+}
+
+async function step2(choice) {
+  user(choice)
+  setOptions([])
+  
+  await bot("What are you most concerned about?")
+  
+  setOptions([
+    { text: "Ransomware", action: () => step3("Ransomware") },
+    { text: "Unauthorized Access", action: () => step3("Unauthorized Access") },
+    { text: "Compliance & Audits", action: () => step3("Compliance & Audits") },
+    { text: "Not sure yet", action: () => step3("Not sure yet") }
+  ])
+}
+
+async function step3(concern) {
+  user(concern)
+  setOptions([])
+  
+  await bot("I recommend running a quick, read-only security scan.")
+  await bot("It checks firewall, open ports, startup programs and malware indicators.", 300)
+  
+  cta.classList.remove("hidden")
+}
+
+// Start the conversation
+startChat()
+</script>
+
 </body>
 </html>

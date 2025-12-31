@@ -78,11 +78,68 @@
 <body>
 	<div class="container">
 		<h2>AI Onboarding</h2>
-		<form>
-			<input placeholder="Company" required>
-			<input placeholder="Email" type="email" required>
-			<button>Schedule Demo</button>
+		<form onsubmit="sendEmail(event)">
+  		<input id="company" placeholder="Company" required>
+		<input id="email" placeholder="Email" type="email" required>
+		<button type="submit" id="submitBtn">Schedule Demo</button>
 		</form>
 	</div>
+	<script>
+async function sendEmail(e) {
+  e.preventDefault()
+
+  const company = document.getElementById("company").value
+  const email = document.getElementById("email").value
+
+  const res = await fetch("http://localhost:3000/api/onboarding-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ company, email })
+  })
+
+  if (res.ok) {
+    alert("Demo request sent successfully!")
+    e.target.reset()
+  } else {
+    alert("Failed to send request. Try again.")
+  }
+}
+</script>
+<script>
+async function sendEmail(e) {
+  e.preventDefault()
+
+  const company = document.getElementById("company").value
+  const email = document.getElementById("email").value
+  const btn = document.getElementById("submitBtn")
+
+  // Loading state
+  btn.disabled = true
+  btn.textContent = "Sending..."
+
+  try {
+    const res = await fetch("http://localhost:3000/api/onboarding-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ company, email })
+    })
+
+    if (res.ok) {
+      btn.textContent = "Done ✓"
+      e.target.reset()
+    } else {
+      btn.textContent = "Schedule Demo"
+      btn.disabled = false
+      alert("Failed to send request. Try again.")
+    }
+  } catch (err) {
+    btn.textContent = "Schedule Demo"
+    btn.disabled = false
+    alert("Network error. Try again.")
+  }
+}
+</script>
+
+
 </body>
 </html>

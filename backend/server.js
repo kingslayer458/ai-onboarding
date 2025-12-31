@@ -1,7 +1,8 @@
 // ============================================================
 // ENHANCED SERVER.JS - Bug Fixes + New Features
 // ============================================================
-
+import dotenv from "dotenv"
+dotenv.config()
 import { WebSocketServer } from "ws"
 import http from "http"
 import express from "express"
@@ -9,7 +10,7 @@ import cors from "cors"
 import crypto from "crypto"
 import path from "path"
 import fs from "fs"
-
+import nodemailer from "nodemailer"
 const app = express()
 app.use(cors())
 app.use(express.json({ limit: '50mb' })) // Increased limit for large scan data
@@ -17,10 +18,478 @@ app.use(express.json({ limit: '50mb' })) // Increased limit for large scan data
 const scans = {}
 const activeSessions = {}
 const scanHistory = [] // NEW: Track all scans
-
 // ============================================================
 // ENHANCED REST APIs
 // ============================================================
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
+  }
+})
+app.post("/api/onboarding-email", async (req, res) => {
+  const { company, email } = req.body
+  if (!company || !email) {
+    return res.status(400).json({ error: "Missing fields" })
+  }
+
+  try {
+    await transporter.sendMail({
+      from: `"AGENTIC X" <${process.env.GMAIL_USER}>`,
+      to: process.env.GMAIL_USER,
+      subject: "New AGENTIC X Demo Request",
+      html:`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #ffff;
+            padding: 20px;
+          }
+
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+          }
+
+          /* Liquid gradient header with animation */
+          .header {
+            position: relative;
+            height: 280px;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .liquid-blob {
+            position: absolute;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            background: #eeeeee;
+            animation: liquidFlow 8s ease-in-out infinite;
+          }
+
+          .blob-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -50px;
+            animation-delay: 0s;
+          }
+
+          .blob-2 {
+            width: 250px;
+            height: 250px;
+            bottom: -80px;
+            left: -50px;
+            animation-delay: 2s;
+          }
+
+          .blob-3 {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 20%;
+            animation-delay: 4s;
+          }
+
+          @keyframes liquidFlow {
+            0%, 100% {
+              border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+              transform: translate(0, 0);
+            }
+            50% {
+              border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+              transform: translate(30px, -20px);
+            }
+          }
+
+          .header-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+          }
+
+  
+
+          @keyframes iconPulse {
+            0%, 100% {
+              transform: scale(1);
+              opacity: 1;
+            }
+            50% {
+              transform: scale(1.1);
+              opacity: 0.8;
+            }
+          }
+
+          .header-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+          }
+
+          .header-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+          }
+
+          /* Content section with enhanced spacing */
+          .content {
+            padding: 48px 32px;
+          }
+
+          .greeting {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 24px;
+            line-height: 1.4;
+          }
+
+          .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 32px 0;
+          }
+
+          .info-item {
+            background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease-out;
+          }
+
+          .info-item:nth-child(1) {
+            animation-delay: 0.1s;
+          }
+
+          .info-item:nth-child(2) {
+            animation-delay: 0.2s;
+          }
+
+          @keyframes slideUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .info-item:hover {
+            border-color: #000;
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          }
+
+          .info-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+          }
+
+          .info-value {
+            font-size: 16px;
+            color: #000;
+            font-weight: 600;
+            word-break: break-all;
+          }
+
+          /* Enhanced features section */
+          .features {
+            margin: 32px 0;
+            padding: 24px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 1px solid #f0f0f0;
+          }
+
+          .features-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .feature-list {
+            list-style: none;
+          }
+
+          .feature-list li {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+            line-height: 1.5;
+            animation: featureSlide 0.5s ease-out;
+          }
+
+          .feature-list li:nth-child(1) {
+            animation-delay: 0.3s;
+          }
+
+          .feature-list li:nth-child(2) {
+            animation-delay: 0.4s;
+          }
+
+          .feature-list li:nth-child(3) {
+            animation-delay: 0.5s;
+          }
+
+          @keyframes featureSlide {
+            from {
+              opacity: 0;
+              transform: translateX(-10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0);
+            }
+          }
+
+          .feature-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #000;
+            font-weight: 600;
+          }
+
+          /* Call-to-action button with hover animation */
+          .cta-section {
+            margin-top: 32px;
+            text-align: center;
+          }
+
+          .cta-button {
+            display: inline-block;
+            background: #000;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #000;
+            animation: buttonFadeIn 0.6s ease-out 0.4s backwards;
+          }
+
+          @keyframes buttonFadeIn {
+            from {
+              opacity: 0;
+              transform: scale(0.95);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1);
+            }
+          }
+
+          .cta-button:hover {
+            background: white;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+          }
+
+          .cta-button:active {
+            transform: translateY(0);
+          }
+
+          .secondary-button {
+            display: inline-block;
+            background: transparent;
+            color: #000;
+            padding: 14px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            border: 2px solid #000;
+            margin-left: 12px;
+            transition: all 0.3s ease;
+            animation: buttonFadeIn 0.6s ease-out 0.5s backwards;
+          }
+
+          .secondary-button:hover {
+            background: #000;
+            color: white;
+            transform: translateY(-2px);
+          }
+
+          /* Footer with metadata */
+          .footer {
+            background: #f5f5f5;
+            padding: 24px 32px;
+            border-top: 1px solid #f0f0f0;
+            text-align: center;
+          }
+
+          .footer-text {
+            font-size: 12px;
+            color: #999;
+            line-height: 1.6;
+            margin-bottom: 12px;
+          }
+
+          .metadata {
+            font-size: 11px;
+            color: #bbb;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+          }
+
+          .divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 24px 0;
+          }
+
+          /* Responsive design */
+          @media (max-width: 600px) {
+            .container {
+              border-radius: 8px;
+            }
+
+            .header {
+              height: 220px;
+            }
+
+            .header-title {
+              font-size: 24px;
+            }
+
+            .content {
+              padding: 32px 24px;
+            }
+
+            .info-grid {
+              grid-template-columns: 1fr;
+            }
+
+            .secondary-button {
+              display: block;
+              margin-left: 0;
+              margin-top: 12px;
+            }
+
+            .greeting {
+              font-size: 18px;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <!-- Header with liquid animation -->
+          <div class="header">
+            <div class="liquid-blob blob-1"></div>
+            <div class="liquid-blob blob-2"></div>
+            <div class="liquid-blob blob-3"></div>
+            <div class="header-content">
+              <h1 class="header-title">AGENTIC X</h1>
+              <p class="header-subtitle">AI ONBOARDING AGENT</p>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="content">
+            <p class="greeting">Thank you for your demo request!</p>
+
+            <p style="font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 24px;">
+              We've received your onboarding request and our team is excited to show you how AI onboarding agent  can transform your security operations.
+            </p>
+
+            <!-- Info Grid -->
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">Company</div>
+                <div class="info-value">${company}</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Contact Email</div>
+                <div class="info-value">${email}</div>
+              </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features">
+              <div class="features-title">What's Next</div>
+              <ul class="feature-list">
+                <li>AI oboarding agent will assist you</li>
+                <li>Personalized demo tailored to your security needs</li>
+                <li>Direct access to our security experts for Q&A</li>
+              </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- CTA Section -->
+            <div class="cta-section">
+              <a href="https://example.com/demo" class="secondary-button">Schedule Demo</a>
+              <a href="https://example.com/docs" class="secondary-button">View Documentation</a>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="footer">
+            <p class="footer-text">
+              AI ONBOARDING - Advanced Security Operations Platform<br>
+              Protecting your infrastructure with intelligent automation
+            </p>
+            <div class="metadata">
+              Request ID: ${Date.now()}<br>
+              © 2025 AGENTIC X . All rights reserved.
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
+    })
+
+    res.json({ success: true })
+  } catch (err) {
+    console.error("SMTP error:", err)
+    res.status(500).json({ error: "Email failed" })
+  }
+})
 
 app.post("/api/create-session", (req, res) => {
   const scan_id = crypto.randomUUID()

@@ -1,123 +1,254 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security Scan in Progress</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
   <style>
-    .preloader {
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f9fafb;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* .preloader {
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       background: rgba(0,0,0,0.7);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 9999;
+      transition: opacity 0.3s ease;
+    } */
+
+    .preloader.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
+
     .preloader svg {
       animation: spin 1.2s linear infinite;
     }
+
     @keyframes spin {
       100% { transform: rotate(360deg); }
     }
-  </style>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
+
+    .chatbot {
+      width: 100%;
+      max-width: 420px;
       background: #fff;
-      color: #111;
-      font-family: 'Inter', Arial, sans-serif;
-      margin: 0; padding: 0;
-      min-height: 100vh;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s, color 0.3s;
+      height: 600px;
+      max-height: 90vh;
     }
-    .container {
-      background: #f8f8f8;
-      border-radius: 18px;
-      box-shadow: 0 4px 24px #0001;
-      padding: 40px 32px;
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-    }
-    h3 {
-      font-weight: 600;
-      font-size: 1.5rem;
-      margin-bottom: 1em;
-    }
-    @media (prefers-color-scheme: dark) {
-      body { background: #111; color: #fff; }
-      .container { background: #181818; box-shadow: 0 4px 24px #0006; }
-    }
-    button {
-      background: #111;
+
+    .header {
+      background: #000;
       color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 16px 32px;
+      padding: 16px;
+      font-weight: 600;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .messages {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .status-box {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .status-box h3 {
+      margin: 0 0 12px 0;
       font-size: 1.1rem;
       font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-bottom: 1.5em;
+      color: #111;
     }
-    button:hover {
-      background: #222;
+
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 12px 0;
+    }
+
+    .progress-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+    }
+
+    .progress-list li {
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #111;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .footer {
+      padding: 16px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      background: #fafafa;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    /* Scrollbar styling */
+    .messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+
+    .messages::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
     }
   </style>
 </head>
+
 <body>
-  <div class="preloader" id="preloader">
+  <!-- <div class="preloader" id="preloader">
     <svg width="64" height="64" viewBox="0 0 64 64">
       <circle cx="32" cy="32" r="28" stroke="#2563eb" stroke-width="8" fill="none" stroke-dasharray="44 44"/>
     </svg>
+  </div> -->
+
+  <div class="chatbot">
+    <div class="header">Security Scan in Progress</div>
+
+    <div class="messages" id="messages">
+      <div class="status-box">
+        <h3>Scanning your system...</h3>
+        <div class="spinner"></div>
+      </div>
+
+      <ul class="progress-list" id="progressList"></ul>
+    </div>
+
+    <div class="footer">
+      This may take a few minutes
+    </div>
   </div>
-  <div class="container">
-    <h3>Waiting for scan completion...</h3>
-  </div>
+
   <script>
-function hidePreloader() {
-  document.getElementById('preloader').style.display = 'none';
-}
-window.onload = function() {
-  setTimeout(hidePreloader, 1200);
-}
-const ul = document.createElement("ul")
-document.querySelector(".container").appendChild(ul)
+    // function hidePreloader() {
+    //   const preloader = document.getElementById('preloader');
+    //   preloader.classList.add('hidden');
+    //   setTimeout(() => {
+    //     preloader.style.display = 'none';
+    //   }, 300);
+    // }
 
-fetch("http://localhost:3000/api/active-session")
-  .then(r => r.json())
-  .then(({ scan_id }) => {
-    const ws = new WebSocket("ws://localhost:3000")
+    // window.onload = function() {
+    //   setTimeout(hidePreloader, 1200);
+    // }
 
-    ws.onopen = () => {
-      ws.send(JSON.stringify({
-        type: "REGISTER_UI",
-        scan_id
-      }))
-    }
+    const progressList = document.getElementById("progressList")
 
-    ws.onmessage = (e) => {
-      const d = JSON.parse(e.data)
-      if (d.type === "PROGRESS") {
-        const li = document.createElement("li")
-        li.textContent = "• " + d.message
-        ul.appendChild(li)
+    // Connect to WebSocket for real-time progress
+    fetch("http://localhost:3000/api/active-session")
+      .then(r => r.json())
+      .then(({ scan_id }) => {
+        const ws = new WebSocket("ws://localhost:3000")
+
+        ws.onopen = () => {
+          ws.send(JSON.stringify({
+            type: "REGISTER_UI",
+            scan_id
+          }))
+        }
+
+        ws.onmessage = (e) => {
+          const d = JSON.parse(e.data)
+          if (d.type === "PROGRESS") {
+            const li = document.createElement("li")
+            li.textContent = "• " + d.message
+            progressList.appendChild(li)
+            
+            // Auto-scroll to bottom
+            const messages = document.getElementById("messages")
+            messages.scrollTop = messages.scrollHeight
+          }
+        }
+
+        ws.onerror = (err) => {
+          console.error("WebSocket error:", err)
+        }
+      })
+      .catch(err => {
+        console.error("Failed to connect:", err)
+      })
+
+    // Poll for scan completion
+    setInterval(async () => {
+      try {
+        const r = await fetch("http://localhost:3000/api/active-session-status")
+        const data = await r.json()
+        
+        if (data.status === "PROCESSED") {
+          localStorage.setItem("report", JSON.stringify(data.report))
+          location.href = "results.html"
+        }
+      } catch (err) {
+        console.error("Status check error:", err)
       }
-    }
-  })
-
-setInterval(async () => {
-  const r = await fetch("http://localhost:3000/api/active-session-status")
-  const data = await r.json()
-  if (data.status === "PROCESSED") {
-    localStorage.setItem("report", JSON.stringify(data.report))
-    location.href = "results.html"
-  }
-}, 3000)
-</script>
-
+    }, 3000)
+  </script>
 </body>
 </html>
