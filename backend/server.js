@@ -37,7 +37,8 @@ app.post("/api/onboarding-email", async (req, res) => {
   try {
     await transporter.sendMail({
       from: `"AGENTIC X" <${process.env.GMAIL_USER}>`,
-      to: process.env.GMAIL_USER,
+      to:email,
+      cc: process.env.GMAIL_USER,
       subject: "New AGENTIC X Demo Request",
       html:`
       <!DOCTYPE html>
@@ -823,7 +824,7 @@ const PORT = process.env.PORT || 3000
 
 server.listen(PORT, () => {
   console.log("╔═══════════════════════════════════════╗")
-  console.log("║   SOC Security System - Enhanced      ║")
+  console.log("║ Agentic X Security System - Enhanced  ║")
   console.log("╚═══════════════════════════════════════╝")
   console.log(` Backend Server: http://localhost:${PORT}`)
   console.log(` WebSocket Server: ws://localhost:${PORT}`)
